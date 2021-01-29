@@ -13,7 +13,7 @@ cd MusicPlayer
 bash music install 
 ##
 
-Run Music Command in Terminal And Choose No 2 for Convert mp3 to wav with help of ffmpeg.
+Run Music Command..!
 
 After Run the Music Command Choose 1 To Play Audio.
 
