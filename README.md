@@ -17,7 +17,7 @@ Run Music Command in Terminal And Choose No 2 for Convert mp3 to wav with help o
 
 After Run the Music Command Choose 1 To Play Audio.
 
-![Screenshot]()
+![Screenshot](https://user-images.githubusercontent.com/67478971/106265301-d5446d00-624c-11eb-932d-d2fa0ce901b9.png)
 
 ![Screenshot](https://user-images.githubusercontent.com/67478971/105856187-eef87100-600e-11eb-93eb-600e597ac60b.png)
 
