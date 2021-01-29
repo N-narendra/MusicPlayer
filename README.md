@@ -1,7 +1,7 @@
 # MusicPlayer
 A Simple MusicPlayer is Written By Bash And Easy To use.
 
-This MusicPlayer Help To Play Audio From Terminal by using Aplay command.
+This MusicPlayer Help To Play Audio From Terminal by using ghostdio command.
 
 Usage:-
 
