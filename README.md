@@ -21,10 +21,6 @@ After Run the Music Command Choose 1 To Play Audio.
 
 ![Screenshot](https://user-images.githubusercontent.com/67478971/105856187-eef87100-600e-11eb-93eb-600e597ac60b.png)
 
-![Screemshot](https://user-images.githubusercontent.com/67478971/105856323-20713c80-600f-11eb-815f-4e83836b73e8.png)
-
-
-
 
 
 credits:- 
