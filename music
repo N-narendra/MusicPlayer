@@ -73,15 +73,19 @@ case $c in
             cout "\nEntering Music Directory....!\n" | lolcat;
             MP=~/Music;
             cd $MP;
-            music=$(ls *.mp3 | nl -s ") " | cut -d . -f1 );
-            cout "$music";
-            echo -e "${Y}\nSelect a Song Above list to play:- ${END}\c";
-            read m;
-            echo -e "\nLoading Song....!" | lolcat;
-            ap=$(ls *.mp3 | sed -n "$m p" );
-            cout "\nPlaying $ap \n" | lolcat;
-            cout "To Stop Press Ctrl + c To Stop Audio.";
-            play $ap
+            music=$(ls *.mp3 2>/dev/null | nl -s ") " | cut -d . -f1 ); #Modified to hide directory empty error
+            if [ -n $music ]; then #Added to check if Music is empty
+                echo -e "${Y}No mp3 found in Music directory.${END}";
+            else
+                cout "$music";
+                echo -e "${Y}\nSelect a Song Above list to play:- ${END}\c";
+                read m;
+                echo -e "\nLoading Song....!" | lolcat;
+                ap=$(ls *.mp3 2>/dev/null| sed -n "$m p" ); #Hide error
+                cout "\nPlaying $ap \n" | lolcat;
+                cout "To Stop Press Ctrl + c To Stop Audio.";
+                play $ap
+            fi
         };
         song
     ;;
