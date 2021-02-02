@@ -84,7 +84,7 @@ case $c in
                 ap=$(ls *.mp3 2>/dev/null| sed -n "$m p" ); #Hide error
                 cout "\nPlaying $ap \n" | lolcat;
                 cout "To Stop Press Ctrl + c To Stop Audio.";
-                play $ap
+                play "$ap"
             fi
         };
         song
