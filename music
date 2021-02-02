@@ -81,8 +81,8 @@ case $c in
             else
                 cout "$music";
                 n=$(ls *.mp3|wc -l);
-                cout "     $(($n+1))) Play All";
-                cout "     $(($n+2))) Play looped";
+                echo "Play All"|nl -s ") " -v $(($n+1))|lolcat;
+                echo "Play looped"|nl -s ") " -v $(($n+2))|lolcat;
                 echo -e "${Y}\nSelect a Song Above list to play:- ${END}\c";
                 read m;
                 n=$(($m-$n));
