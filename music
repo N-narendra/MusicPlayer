@@ -1,5 +1,6 @@
 #!/bin/bash
 VERSION=2.2;
+MP=~/Music;
 export TERM=linux;
 R="\e[91;1m";
 G="\e[92;1m";
@@ -9,6 +10,8 @@ P="\e[95;1m";
 S="\e[96;1m";
 END="\e[0m";
 CN="\n";
+
+[ -d "$MP" ] || mkdir "$MP";
 install=$1;
 case $install in 
     -install | -i | --i | --install)
@@ -71,27 +74,62 @@ case $c in
             center "Created By Narendra" | lolcat;
             echo;
             cout "\nEntering Music Directory....!\n" | lolcat;
-            MP=~/Music;
             cd $MP;
             music=$(ls *.mp3 2>/dev/null | nl -s ") " | cut -d . -f1 ); #Modified to hide directory empty error
             if [ -z "$music" ]; then #Added to check if Music is empty
                 echo -e "${Y}No mp3 found in Music directory.${END}";
             else
                 cout "$music";
+                n=$(ls *.mp3|wc -l);
+                cout "     $(($n+1))) Play All";
+                cout "     $(($n+2))) Play looped";
                 echo -e "${Y}\nSelect a Song Above list to play:- ${END}\c";
                 read m;
-                echo -e "\nLoading Song....!" | lolcat;
-                ap=$(ls *.mp3 2>/dev/null| sed -n "$m p" ); #Hide error
-                cout "\nPlaying $ap \n" | lolcat;
-                cout "To Stop Press Ctrl + c To Stop Audio.";
-                play "$ap"
+                n=$(($m-$n));
+                if [ $n -gt 0 ]; then
+                    if [ $n -eq 1 ]; then
+                            playType="PA";
+                    elif [ $n -eq 2 ]; then
+                            playType="PL";
+                    else
+                            cout "Worng Input";
+                    fi
+                else
+                    playType="1ce";
+                fi
+                case $playType in
+                    "PA")
+                        for ap in *.mp3;do
+                             echo -e "\nLoading Song....!" | lolcat;
+                             cout "\nPlaying $ap \n" | lolcat;
+                             cout "To Stop Press Ctrl + c To Stop Audio.";
+                             play "$ap";
+                        done
+                        ;;
+                     "PL")
+                        while true; do
+                        for ap in *.mp3;do
+                                 echo -e "\nLoading Song....!" | lolcat;
+                                 cout "\nPlaying $ap \n" | lolcat;
+                                 cout "To Stop Press Ctrl + c To Stop Audio.";
+                                 play "$ap";
+                            done
+                        done
+                        ;;
+                     "1ce")
+                        echo -e "\nLoading Song....!" | lolcat;
+                        ap=$(ls *.mp3 2>/dev/null| sed -n "$m p" ); #Hide error
+                        cout "\nPlaying $ap \n" | lolcat;
+                        cout "To Stop Press Ctrl + c To Stop Audio.";
+                        play "$ap";
+                        ;;
+                esac
             fi
         };
         song
     ;;
     2)
         clear;
-        center "Help" | lolcat;
         figlet -w $(tput cols) -c About Music Player | lolcat;
         center "Thank You" | lolcat;
         echo -e "\e[96;1m";
