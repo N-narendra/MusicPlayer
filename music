@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-    VERSION=2.3;
+
+    VERSION=2.4;
     export TERM=linux;
     R="\e[91;1m";
     G="\e[92;1m";
@@ -22,13 +23,28 @@
             exit
         ;;
     esac;
+function aword (){
+while true; do 
+echo -ne "\r$1" | lolcat;
+sleep 0.1
+done
+}
+ani=(♪ ♫ 🎶 🎹 🎼 🎻 🎷 🎸 🎤 𝅘𝅥𝅰  𝅘𝅥𝅲  𝄋 𝄏 𝄜 𝄞 𝄠 𝄪 𝄲 𝄿  𝅲  𝆱 𝆲 𝇚 😊 😀 😇 🥰 ☺️ 🐁 🌈 💻 🎊  🎉  🔇 🔈 🔉 🔊 ✯ ) 
+function anim (){
+while true; do
+for i in ${ani[@]}; do
+echo -ne "MusicPlayer:- $i\r" | lolcat;
+sleep 0.5
+done
+done
+}
     function cout () 
     { 
         echo -e "$@" | lolcat
     };
     function play () 
     { 
-        ghostdio "$@"
+        ghostdio "$@" >/dev/null 2>&1
     };
     function supp () 
     { 
@@ -86,8 +102,10 @@
                         for ap in ${M};
                         do
                             cout "\nPlaying $ap \n" | lolcat;
-                            cout "To Stop Press Ctrl + c To Stop Audio.";
-                            play "$ap";
+                            cout "To Stop Press Ctrl + c To Stop Audio.\n";
+                            anim &
+                            pid=$!
+                            play "$ap";kill $pid;
                         done;
                     fi;
                 else
@@ -101,11 +119,14 @@
                             cout "\n$music";
                             echo -e "${Y}\nSelect a Song Above list to play:- ${END}\c";
                             read m;
-                            echo -e "\nLoading Song....!" | lolcat;
+                            echo -e "\nLoading Song....!\n" | lolcat;
                             ap=$(ls *.mp3 2>/dev/null| sed -n "$m p" );
-                            cout "\nPlaying $ap \n" | lolcat;
-                            cout "To Stop Press Ctrl + c To Stop Audio.";
-                            play "$ap";
+                            cout "Playing $ap\n" 
+                            cout "To Stop Press Ctrl + c To Stop Audio.\n";                      
+                            anim &
+                            pid=$!
+                            play "$ap"  
+                            kill "$pid";
                         fi;
                     fi;
                 fi
@@ -119,7 +140,7 @@
             center "Thank You" | lolcat;
             echo -e "\e[96;1m";
             cat <<'EOF'
-A Bash Music Player Was Created By Narendra From GhostxOfficial. This Player,
+This Music Player Was Created By Narendra From GhostxOfficial. This Player,
 Help To Play .mp3 Format Audio file.
 How to Use ?
 Simple Just Type Music From Terminal, just to 1) music choose and enjoy..!
@@ -127,7 +148,7 @@ The Default Location Of audio file is /home/user/Music.
 Credits:-
 Ghostdio audioplay binary by Axon:- https://github.com/AXIM0S/ghostdio
 Lolcat on C source by jaseg :- https://github.com/jaseg/lolcat
-Hope You Like This Simple Music Player by Bash.
+Hope You Like This Simple Music Player///.
 EOF
 
             echo -e "\e[0m";
