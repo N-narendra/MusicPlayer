@@ -1,101 +1,124 @@
-#!/bin/bash
-VERSION=2.2;
-export TERM=linux;
-R="\e[91;1m";
-G="\e[92;1m";
-Y="\e[93;1m";
-B="\e[94;1m";
-P="\e[95;1m";
-S="\e[96;1m";
-END="\e[0m";
-CN="\n";
-install=$1;
-case $install in 
-    -install | -i | --i | --install)
-        echo -e "Installing required package's..!\n";
-        sudo cp -r ghostdio lolcat music /usr/bin;
-        sudo apt install figlet || echo -e "\e[91;1mSorry Unable To Install figlet Please install Manually According Your Distro.!\n";
-        sudo chmod +755 /usr/bin/lolcat;
-        sudo chmod +755 /usr/bin/ghostdio;
-        sudo chmod +755 /usr/bin/music;
-        echo -e "${CN}${Y}Installation is Done${END}${CN}";
-        exit
-    ;;
-esac;
-function cout () 
-{ 
-    echo -e "$@" | lolcat
-};
-function play () 
-{ 
-    ghostdio "$@"
-};
-function supp () 
-{ 
-    "$@" > /dev/null 2>&1
-};
-function center () 
-{ 
-    termwidth="$(tput cols)";
-    padding="$(printf '%0.1s' ={1..500})";
-    printf '%*.*s %s %*.*s\n' 0 "$(((termwidth-2-${#1})/2))" "$padding" "$1" 0 "$(((termwidth-1-${#1})/2))" "$padding"
-};
-function tcenter () 
-{ 
-    COLUMNS=$(tput cols);
-    printf "%*s\n" $(((${#title}+$COLUMNS)/2)) "$@" | lolcat
-};
-clear;
-center Welcome | lolcat;
-figlet -w $(tput cols) -c Music-Player | lolcat;
-center Main-Menu | lolcat;
-echo && echo;
-tcenter "[Music Menu]";
-echo;
-tcenter "1) Music";
-echo;
-tcenter "2) Help";
-echo;
-tcenter "3) Exit";
-echo;
-echo -e "${Y}Enter Your Choice:- ${END}\c";
-read c;
-case $c in 
-    1)
-        function song () 
-        { 
+#!/usr/bin/env bash
+    VERSION=2.3;
+    export TERM=linux;
+    R="\e[91;1m";
+    G="\e[92;1m";
+    Y="\e[93;1m";
+    B="\e[94;1m";
+    P="\e[95;1m";
+    S="\e[96;1m";
+    END="\e[0m";
+    CN="\n";
+    install=$1;
+    case $install in 
+        -install | -i | --i | --install)
+            echo -e "Installing required package's..!\n";
+            sudo cp -r ghostdio lolcat music /usr/bin;
+            sudo apt install figlet || echo -e "\e[91;1mSorry Unable To Install figlet Please install Manually According Your Distro.!\n";
+            sudo chmod +755 /usr/bin/lolcat;
+            sudo chmod +755 /usr/bin/ghostdio;
+            sudo chmod +755 /usr/bin/music;
+            echo -e "${CN}${Y}Installation is Done${END}${CN}";
+            exit
+        ;;
+    esac;
+    function cout () 
+    { 
+        echo -e "$@" | lolcat
+    };
+    function play () 
+    { 
+        ghostdio "$@"
+    };
+    function supp () 
+    { 
+        "$@" > /dev/null 2>&1
+    };
+    function center () 
+    { 
+        termwidth="$(tput cols)";
+        padding="$(printf '%0.1s' ={1..500})";
+        printf '%*.*s %s %*.*s\n' 0 "$(((termwidth-2-${#1})/2))" "$padding" "$1" 0 "$(((termwidth-1-${#1})/2))" "$padding"
+    };
+    function tcenter () 
+    { 
+        COLUMNS=$(tput cols);
+        printf "%*s\n" $(((${#title}+$COLUMNS)/2)) "$@" | lolcat
+    };
+    clear;
+    center Welcome | lolcat;
+    figlet -w $(tput cols) -c Music-Player | lolcat;
+    center Main-Menu | lolcat;
+    echo && echo;
+    tcenter "[Music Menu]";
+    echo;
+    tcenter "1) Music";
+    echo;
+    tcenter "2) Help";
+    echo;
+    tcenter "3) Exit";
+    echo;
+    echo -e "${Y}Enter Your Choice:- ${END}\c";
+    read c;
+    case $c in 
+        1)
+            function song () 
+            { 
+                clear;
+                center "Version $VERSION" | lolcat;
+                figlet -w $(tput cols) -c Music | lolcat;
+                echo;
+                center "Created By Narendra" | lolcat;
+                echo;
+                cout "\nEntering Music Directory....!\n" | lolcat;
+                echo -e "\e[93;1mWant to Play Next Music by AutoPlay..?(y/n)\e[0m\c";
+                read c;
+                if [ "$c" == "y" ]; then
+                    MP=~/Music;
+                    cd $MP;
+                    music=$(ls *.mp3 2>/dev/null | nl -s ") " | cut -d . -f1 );
+                    if [ -z "$music" ]; then
+                        echo -e "${Y}No mp3 found in Music directory.${END}";
+                    else
+                        cout "\n$music";
+                        echo -e "\nLoading Song....!" | lolcat;
+                        M=$MP/*.mp3;
+                        for ap in ${M};
+                        do
+                            cout "\nPlaying $ap \n" | lolcat;
+                            cout "To Stop Press Ctrl + c To Stop Audio.";
+                            play "$ap";
+                        done;
+                    fi;
+                else
+                    if [ "$c" == "n" ]; then
+                        MP=~/Music;
+                        cd $MP;
+                        music=$(ls *.mp3 2>/dev/null | nl -s ") " | cut -d . -f1 );
+                        if [ -z "$music" ]; then
+                            echo -e "${Y}No mp3 found in Music directory.${END}";
+                        else
+                            cout "\n$music";
+                            echo -e "${Y}\nSelect a Song Above list to play:- ${END}\c";
+                            read m;
+                            echo -e "\nLoading Song....!" | lolcat;
+                            ap=$(ls *.mp3 2>/dev/null| sed -n "$m p" );
+                            cout "\nPlaying $ap \n" | lolcat;
+                            cout "To Stop Press Ctrl + c To Stop Audio.";
+                            play "$ap";
+                        fi;
+                    fi;
+                fi
+            };
+            song
+        ;;
+        2)
             clear;
-            center "Version $VERSION" | lolcat;
-            figlet -w $(tput cols) -c Music | lolcat;
-            echo;
-            center "Created By Narendra" | lolcat;
-            echo;
-            cout "\nEntering Music Directory....!\n" | lolcat;
-            MP=~/Music;
-            cd $MP;
-            music=$(ls *.mp3 2>/dev/null | nl -s ") " | cut -d . -f1 ); #Modified to hide directory empty error
-            if [ -z "$music" ]; then #Added to check if Music is empty
-                echo -e "${Y}No mp3 found in Music directory.${END}";
-            else
-                cout "$music";
-                echo -e "${Y}\nSelect a Song Above list to play:- ${END}\c";
-                read m;
-                echo -e "\nLoading Song....!" | lolcat;
-                ap=$(ls *.mp3 2>/dev/null| sed -n "$m p" ); #Hide error
-                cout "\nPlaying $ap \n" | lolcat;
-                cout "To Stop Press Ctrl + c To Stop Audio.";
-                play "$ap"
-            fi
-        };
-        song
-    ;;
-    2)
-        clear;
-        center "Help" | lolcat;
-        figlet -w $(tput cols) -c About Music Player | lolcat;
-        center "Thank You" | lolcat;
-        echo -e "\e[96;1m";
-        cat <<'EOF'
+            center "Help" | lolcat;
+            figlet -w $(tput cols) -c About Music Player | lolcat;
+            center "Thank You" | lolcat;
+            echo -e "\e[96;1m";
+            cat <<'EOF'
 A Bash Music Player Was Created By Narendra From GhostxOfficial. This Player,
 Help To Play .mp3 Format Audio file.
 How to Use ?
@@ -107,19 +130,16 @@ Lolcat on C source by jaseg :- https://github.com/jaseg/lolcat
 Hope You Like This Simple Music Player by Bash.
 EOF
 
-        echo -e "\e[0m";
-        center "Press Enter Return Menu" | lolcat;
-        read;
-        music
-    ;;
-    3)
-        clear;
-        center "Good Bye" | lolcat;
-        figlet -w $(tput cols) -c Exit | lolcat;
-        center "See Ya.." | lolcat;
-        exit
-    ;;
-esac
-
-
-# Beautified & optimized for bash by BashBox ---- I know you are gonna remove me  :P
+            echo -e "\e[0m";
+            center "Press Enter Return Menu" | lolcat;
+            read;
+            music
+        ;;
+        3)
+            clear;
+            center "Good Bye" | lolcat;
+            figlet -w $(tput cols) -c Exit | lolcat;
+            center "See Ya.." | lolcat;
+            exit
+        ;;
+    esac;
