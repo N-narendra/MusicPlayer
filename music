@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-    VERSION=2.4;
+    VERSION=2.5;
     export TERM=linux;
     R="\e[91;1m";
     G="\e[92;1m";
