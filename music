@@ -23,6 +23,12 @@
             exit
         ;;
     esac;
+
+function skip (){
+bin=ghostdio 
+VAR="$(ps -fA | grep -v grep | grep "$bin" | tail -n1 | awk '{print $2}')";  if [ -n "$bin" -a -n "$bin" ]; then kill $VAR; fi;
+}
+
 function aword (){
 while true; do 
 echo -ne "\r$1" | lolcat;
@@ -44,7 +50,7 @@ done
     };
     function play () 
     { 
-        ghostdio "$@" >/dev/null 2>&1
+        ghostdio "$@" 
     };
     function supp () 
     { 
@@ -101,11 +107,11 @@ done
                         M=$MP/*.mp3;
                         for ap in ${M};
                         do
-                            cout "\nPlaying $ap \n" | lolcat;
+                            cout "\nPlaying $ap \n" | lolcat; 
                             cout "To Stop Press Ctrl + c To Stop Audio.\n";
-                            anim &
-                            pid=$!
-                            play "$ap";kill $pid;
+                            play "$ap" & 
+                            echo -e "\e[96;1mTo Skip Audio Press enter\e[0m\c\n"; read;
+                            skip 
                         done;
                     fi;
                 else
@@ -121,8 +127,8 @@ done
                             read m;
                             echo -e "\nLoading Song....!\n" | lolcat;
                             ap=$(ls *.mp3 2>/dev/null| sed -n "$m p" );
-                            cout "Playing $ap\n" 
-                            cout "To Stop Press Ctrl + c To Stop Audio.\n";                      
+                            cout "Playing $ap\n"
+                            cout "\nTo Stop Press Ctrl + c To Stop Audio.\n";                      
                             anim &
                             pid=$!
                             play "$ap"  
